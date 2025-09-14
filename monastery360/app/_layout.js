@@ -1,22 +1,52 @@
+import React from "react";
 import { Tabs } from "expo-router";
-import Icon from "react-native-vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Layout() {
   return (
     <Tabs
-      screenOptions={{
+      screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: "#1E90FF",
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+          switch (route.name) {
+            case "index":
+              iconName = "home";
+              break;
+            case "ExploreScreen":
+              iconName = "book";
+              break;
+            case "MapScreen":
+              iconName = "map";
+              break;
+            case "ArchiveScreen":
+              iconName = "albums";
+              break;
+            case "EventsScreen":
+              iconName = "calendar";
+              break;
+            case "TourScreen":
+              iconName = "videocam";
+              break;
+            case "ProfileScreen":
+              iconName = "person";
+              break;
+            default:
+              iconName = "ellipse";
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: "#2d6a4f",
         tabBarInactiveTintColor: "gray",
-      }}
+      })}
     >
-      <Tabs.Screen name="index" options={{ title: "Home", tabBarIcon: ({color, size}) => <Icon name="home-outline" size={size} color={color}/> }} />
-      <Tabs.Screen name="explore" options={{ title: "Explore", tabBarIcon: ({color, size}) => <Icon name="search-outline" size={size} color={color}/> }} />
-      <Tabs.Screen name="map" options={{ title: "Map", tabBarIcon: ({color, size}) => <Icon name="map-outline" size={size} color={color}/> }} />
-      <Tabs.Screen name="archive" options={{ title: "Archive", tabBarIcon: ({color, size}) => <Icon name="archive-outline" size={size} color={color}/> }} />
-      <Tabs.Screen name="events" options={{ title: "Events", tabBarIcon: ({color, size}) => <Icon name="calendar-outline" size={size} color={color}/> }} />
-      <Tabs.Screen name="tour" options={{ title: "Tour", tabBarIcon: ({color, size}) => <Icon name="compass-outline" size={size} color={color}/> }} />
-      <Tabs.Screen name="profile" options={{ title: "Profile", tabBarIcon: ({color, size}) => <Icon name="person-outline" size={size} color={color}/> }} />
+      <Tabs.Screen name="index" options={{ title: "Home" }} />
+      <Tabs.Screen name="ExploreScreen" options={{ title: "Explore" }} />
+      <Tabs.Screen name="MapScreen" options={{ title: "Map" }} />
+      <Tabs.Screen name="ArchiveScreen" options={{ title: "Archive" }} />
+      <Tabs.Screen name="EventsScreen" options={{ title: "Events" }} />
+      <Tabs.Screen name="TourScreen" options={{ title: "Tours" }} />
+      <Tabs.Screen name="ProfileScreen" options={{ title: "Profile" }} />
     </Tabs>
   );
 }
