@@ -1,7 +1,8 @@
+// app/MapScreen.js
 import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import MapView, { Marker, Callout } from "react-native-maps";
+import { Platform, View, Text, StyleSheet, Dimensions } from "react-native";
 
+// Sample Monasteries Data
 const monasteries = [
   {
     id: "1",
@@ -27,6 +28,44 @@ const monasteries = [
 ];
 
 export default function MapScreen() {
+  // ✅ Web version (Leaflet)
+  if (Platform.OS === "web") {
+    // Import leaflet CSS only for web
+    require("leaflet/dist/leaflet.css");
+    const { MapContainer, TileLayer, Marker, Popup } = require("react-leaflet");
+
+    return (
+      <div style={{ height: "100vh", width: "100%" }}>
+        <MapContainer
+          center={[27.4, 88.6]}
+          zoom={9}
+          style={{ height: "100%", width: "100%" }}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+          {monasteries.map((monastery) => (
+            <Marker
+              key={monastery.id}
+              position={[monastery.latitude, monastery.longitude]}
+            >
+              <Popup>
+                <strong>{monastery.name}</strong>
+                <br />
+                {monastery.description}
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
+    );
+  }
+
+  // Mobile (iOS/Android) version (react-native-maps)
+  const MapView = require("react-native-maps").default;
+  const { Marker, Callout } = require("react-native-maps");
+
   return (
     <View style={styles.container}>
       <MapView
@@ -45,7 +84,6 @@ export default function MapScreen() {
               latitude: monastery.latitude,
               longitude: monastery.longitude,
             }}
-            title={monastery.name}
           >
             <Callout>
               <View style={{ width: 200 }}>
